@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- 
+      ============================================================================
+      SEO & METADATA
+      ============================================================================
+    -->
+    <title>AdGenius Pro | Design Ads That Dominate</title>
+    <meta name="description" content="Stop making boring ads. Use AdGenius Pro, the AI-powered ad design generator, to create instant, intelligent, and irresistible ads that dominate your competition.">
+    <meta name="keywords" content="AI ad design, AI ad maker, online ad creator, AI poster generator, social media ads, AI marketing, ad copy generator">
+    
+    <!-- OpenGraph (for social sharing) -->
+    <meta property="og:title" content="AdGenius Pro | Design Ads That Dominate">
+    <meta property="og:description" content="Instant. Intelligent. Irresistible. Generate high-converting ad designs and copy in seconds with AI.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://adgenius.pro"> <!-- Placeholder URL -->
+    <meta property="og:image" content="https://placehold.co/1200x630/03001C/9333EA?text=AdGenius+Pro&font=inter"> <!-- Placeholder OG Image -->
+    <meta property="og:image:alt" content="AdGenius Pro AI Ad Generator Logo">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="AdGenius Pro | Design Ads That Dominate">
+    <meta name="twitter:description" content="Stop guessing. Start generating. AI-powered ad designs for Facebook, Instagram, Google, and YouTube.">
+    <meta name="twitter:image" content="https://placehold.co/1200x600/03001C/2563EB?text=AdGenius+Pro&font=inter"> <!-- Placeholder Twitter Image -->
+
+    <!-- 
+      ============================================================================
+      FONTS & STYLES
+      ============================================================================
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS for Animations & Theme -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Animated Gradient Background */
+        @keyframes gradient-bg {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .animate-gradient-bg {
+            /* Black + Neon Blue/Purple */
+            background: linear-gradient(-45deg, #03001C, #0a0149, #0d0157, #03001C);
+            background-size: 400% 400%;
+            animation: gradient-bg 20s ease infinite;
+        }
+
+        /* Custom animation for the "slow pulse" glow on the CTA */
+        @keyframes slow-pulse {
+            0%, 100% { box-shadow: 0 0 25px theme(colors.blue.500), 0 0 40px theme(colors.blue.600 / 0.7); }
+            50% { box-shadow: 0 0 40px theme(colors.blue.400), 0 0 60px theme(colors.blue.500 / 0.9); }
+        }
+        .animate-slow-pulse {
+            animation: slow-pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
+
+    <!-- 
+      ============================================================================
+      REACT & BABEL (for running JSX in the browser)
+      ============================================================================
+    -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- 
+      ============================================================================
+      SCHEMA.ORG (for SEO)
+      ============================================================================
+    -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "AdGenius Pro",
+      "applicationCategory": "DesignApplication",
+      "operatingSystem": "Web",
+      "description": "AI-powered ad design generator for creating high-converting ads for social media, YouTube, and Google.",
+      "keywords": "AI ad design, AI ad maker, online ad creator, AI poster generator",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "description": "Free ad generation limit (3 per day)."
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "1250"
+      }
+    }
+    </script>
+</head>
+<body class="bg-[#03001C]">
+    
+    <!-- React app will mount here -->
+    <div id="root"></div>
+
+    <!-- 
+      ============================================================================
+      REACT APPLICATION (written in JSX)
+      ============================================================================
+    -->
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // ========================================================================
+        // Inline SVG Icons (for single-file dependency-free UI)
+        // Using common icons from lucide-react
+        // ========================================================================
+
+        const IconMenu = (props) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+                <line x1="4" y1="12" x2="20" y2="12"></line>
+                <line x1="4" y1="6" x2="20" y2="6"></line>
+                <line x1="4" y1="18" x2="20" y2="18"></line>
+            </svg>
+        );
+
+        const IconX = (props) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        );
+
+        const IconSparkles = (props) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-400" {...props}>
+                <path d="M12 3a6 6 0 0 0-6 6 6 6 0 0 0 6 6 6 6 0 0 0 6-6 6 6 0 0 0-6-6z"></path>
+                <path d="M5 3v4"></path><path d="M19 17v4"></path>
+                <path d="M3 5l2.83 2.83"></path><path d="M18.17 18.17l2.83 2.83"></path>
+                <path d="M12 5v0"></path><path d="M12 19v0"></path>
+                <path d="M5 12h0"></path><path d="M19 12h0"></path>
+                <path d="M5 19l2.83-2.83"></path><path d="M18.17 5.83l2.83-2.83"></path>
+            </svg>
+        );
+
+        const IconLayoutGrid = (props) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-purple-400" {...props}>
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="14" y="14" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+        );
+
+        const IconPalette = (props) => (
+             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-pink-400" {...props}>
+                <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle>
+                <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle>
+                <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle>
+                <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle>
+                <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.667 0-.42-.15-.812-.426-1.12C13.926 18.5 14 17.766 14 17c0-1.767-.8-3.333-2-4.5C13.2 11.333 14 9.767 14 8c0-.468-.065-.923-.188-1.354A8.75 8.75 0 0 0 12 2z"></path>
+            </svg>
+        );
+        
+        const IconType = (props) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-teal-400" {...props}>
+                <polyline points="4 7 4 4 20 4 20 7"></polyline>
+                <line x1="9" y1="20" x2="15" y2="20"></line>
+                <line x1="12" y1="4" x2="12" y1="20"></line>
+            </svg>
+        );
+
+        const IconCheck = (props) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-400" {...props}>
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+        );
+
+        // ========================================================================
+        // App Component
+        // ========================================================================
+        function App() {
+            const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+            const featureCards = [
+                {
+                    icon: <IconSparkles />,
+                    title: "Instant Genius Design",
+                    description: "Our AI doesn't just guess. It analyzes top-performing ads and generates designs built to convert. Mediocrity isn't in its vocabulary."
+                },
+                {
+                    icon: <IconLayoutGrid />,
+                    title: "Smart Platform Selector",
+                    description: "Stop resizing. Select Facebook, Instagram, Google, or YouTube, and get perfectly formatted designs. Every. Single. Time."
+                },
+                {
+                    icon: <IconType />,
+                    title: "Hypnotic Ad Copy",
+                    description: "Generate captions, headlines, and CTAs with built-in keyword optimization. Turn passive scrollers into obsessed buyers."
+                },
+                {
+                    icon: <IconPalette />,
+                    title: "Auto-Brand Analyzer",
+                    description: "Upload your logo, and our AI instantly extracts your brand colors and fonts. Consistency is for closers."
+                },
+                {
+                    icon: <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-400"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>,
+                    title: "Instant Ad Previews",
+                    description: "See exactly how your dominant ad will look on a real mockup before you even export. No more bad surprises."
+                },
+                {
+                    icon: <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-indigo-400"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y1="3"></line></svg>,
+                    title: "Multi-Format Export",
+                    description: "Download your masterpieces as JPG, PNG, or even MP4 for animated stories. Your assets, your rules."
+                }
+            ];
+
+            const blogPosts = [
+                { id: 1, title: "3 AI Prompts That Generate 5-Figure Ad Creatives", category: "AI Marketing", img: "https://placehold.co/600x400/0a0149/9333EA?text=AI+Prompts&font=inter" },
+                { id: 2, title: "Why Your Facebook Ads Fail (And How to Fix It)", category: "Ad Design", img: "https://placehold.co/600x400/0d0157/2563EB?text=Ad+Failure&font=inter" },
+                { id: 3, title: "The 2025 Color Palettes That Force Clicks", category: "Design Trends", img: "https://placehold.co/600x400/03001C/E11D48?text=Colors&font=inter" }
+            ];
+
+            return (
+                <div className="relative min-h-screen w-full overflow-x-hidden text-gray-200 animate-gradient-bg">
+                    
+                    {/* Main Content (relative z-10 to be above glow) */}
+                    <div className="relative z-10">
+                        {/* ==================================================================== */}
+                        {/* Header */}
+                        {/* ==================================================================== */}
+                        <header className="absolute top-0 left-0 w-full z-50">
+                            <nav className="max-w-7xl mx-auto flex justify-between items-center p-6 lg:px-8">
+                                <a href="#" className="flex-shrink-0">
+                                    <h1 className="font-extrabold text-3xl tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+                                        AdGenius Pro
+                                    </h1>
+                                </a>
+                                <div className="hidden md:flex items-center gap-6">
+                                    <a href="#features" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">Features</a>
+                                    <a href="#pricing" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">Pricing</a>
+                                    <a href="#blog" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">Blog</a>
+                                    <a href="#" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">Login</a>
+                                </div>
+                                <div className="hidden md:block">
+                                    <a
+                                        href="#hero"
+                                        className="rounded-lg bg-white/10 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:bg-white/20"
+                                    >
+                                        Dashboard
+                                    </a>
+                                </div>
+                                <div className="md:hidden">
+                                    <button
+                                        type="button"
+                                        className="p-2 text-gray-300 hover:text-white"
+                                        onClick={() => setIsMenuOpen(true)}
+                                    >
+                                        <span className="sr-only">Open menu</span>
+                                        <IconMenu />
+                                    </button>
+                                </div>
+                            </nav>
+                            
+                            {/* Mobile Menu */}
+                            {isMenuOpen && (
+                                <div className="md:hidden fixed inset-0 z-50 bg-[#03001C]/90 backdrop-blur-lg">
+                                    <div className="w-full h-full p-6">
+                                        <div className="flex justify-between items-center">
+                                            <a href="#" className="flex-shrink-0">
+                                                <h1 className="font-extrabold text-3xl tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+                                                    AdGenius Pro
+                                                </h1>
+                                            </a>
+                                            <button
+                                                type="button"
+                                                className="p-2 text-gray-300 hover:text-white"
+                                                onClick={() => setIsMenuOpen(false)}
+                                            >
+                                                <span className="sr-only">Close menu</span>
+                                                <IconX />
+                                            </button>
+                                        </div>
+                                        <div className="mt-16 flex flex-col items-center gap-8">
+                                            <a href="#features" onClick={() => setIsMenuOpen(false)} className="text-2xl font-semibold text-gray-200 hover:text-white">Features</a>
+                                            <a href="#pricing" onClick={() => setIsMenuOpen(false)} className="text-2xl font-semibold text-gray-200 hover:text-white">Pricing</a>
+                                            <a href="#blog" onClick={() => setIsMenuOpen(false)} className="text-2xl font-semibold text-gray-200 hover:text-white">Blog</a>
+                                            <a href="#" onClick={() => setIsMenuOpen(false)} className="text-2xl font-semibold text-gray-200 hover:text-white">Login</a>
+                                            <a
+                                                href="#hero"
+                                                onClick={() => setIsMenuOpen(false)}
+                                                className="rounded-lg bg-blue-600 px-8 py-4 text-xl font-bold text-white shadow-lg shadow-blue-600/50"
+                                            >
+                                                Dashboard
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </header>
+
+                        {/* ==================================================================== */}
+                        {/* Hero Section */}
+                        {/* ==================================================================== */}
+                        <section id="hero" className="relative isolate pt-48 pb-32 sm:pt-56 sm:pb-40 px-6 lg:px-8">
+                            {/* Background Glow */}
+                            <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
+                                <div
+                                    className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#9333ea] to-[#2563eb] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
+                                    style={{ clipPath: 'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)' }}
+                                />
+                            </div>
+
+                            <div className="max-w-4xl mx-auto text-center">
+                                <h1 className="text-5xl font-extrabold tracking-tighter text-white sm:text-7xl md:text-8xl">
+                                    Design Ads That 
+                                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500"> Dominate.</span>
+                                </h1>
+                                <p className="mt-6 text-xl sm:text-2xl text-gray-300 font-medium tracking-tight">
+                                    Instant. Intelligent. Irresistible.
+                                </p>
+                                <a
+                                    href="#"
+                                    className="mt-12 inline-block rounded-lg bg-blue-600 px-8 py-4 text-lg font-bold text-white transition-all duration-300 hover:bg-blue-500 hover:scale-105 animate-slow-pulse"
+                                >
+                                    Create My Ad Now
+                                </a>
+                            </div>
+                        </section>
+
+                        {/* ==================================================================== */}
+                        {/* Arrogant Quote Section */}
+                        {/* ==================================================================== */}
+                        <section className="py-16 sm:py-24 px-6">
+                            <h2 className="text-3xl font-medium text-center italic text-gray-400 max-w-3xl mx-auto">
+                                "Mediocre ads are for amateurs.
+                                <br />
+                                <span className="text-white not-italic font-semibold">You're here to dominate."</span>
+                            </h2>
+                        </section>
+
+                        {/* ==================================================================== */}
+                        {/* Features Section */}
+                        {/* ==================================================================== */}
+                        <section id="features" className="py-20 sm:py-32 px-6 lg:px-8">
+                            <div className="max-w-7xl mx-auto">
+                                <div className="max-w-2xl mx-auto lg:mx-0 text-center lg:text-left">
+                                    <h2 className="text-4xl font-extrabold tracking-tighter text-white sm:text-6xl">
+                                        Stop Guessing. Start Generating.
+                                    </h2>
+                                    <p className="mt-6 text-lg text-gray-300">
+                                        Your competition is still using templates from 2010. While they're busy 'being creative', you'll be busy converting. This is the unfair advantage.
+                                    </p>
+                                </div>
+                                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
+                                    {featureCards.map((feature) => (
+                                        <div 
+                                            key={feature.title}
+                                            className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-3xl p-8 transform transition-all duration-300 hover:bg-white/10 hover:shadow-2xl hover:shadow-blue-800/20 hover:-translate-y-2"
+                                        >
+                                            {feature.icon}
+                                            <h3 className="text-xl font-bold text-white mt-6">{feature.title}</h3>
+                                            <p className="text-gray-300 mt-2">{feature.description}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* ==================================================================== */}
+                        {/* Ad Preview Mockup Section */}
+                        {/* ==================================================================== */}
+                        <section className="py-20 sm:py-32 px-6 lg:px-8 bg-black/20">
+                            <div className="max-w-5xl mx-auto text-center">
+                                <h2 className="text-4xl font-extrabold tracking-tighter text-white sm:text-6xl">
+                                    See Your Genius In Action
+                                </h2>
+                                <p className="mt-6 text-lg text-gray-300 max-w-2xl mx-auto">
+                                    From prompt to perfection in under 30 seconds.
+                                    Here's a taste of what your new marketing power looks like.
+                                </p>
+                                
+                                <div className="mt-16 relative w-full max-w-lg mx-auto">
+                                    {/* Phone Mockup */}
+                                    <div className="relative mx-auto border-gray-800 bg-gray-900 border-[10px] rounded-[2.5rem] h-[550px] w-[270px] shadow-2xl shadow-purple-500/30">
+                                        <div className="w-[148px] h-[18px] bg-gray-900 top-0 rounded-b-[1rem] left-1/2 -translate-x-1/2 absolute"></div>
+                                        <div className="h-[40px] w-[3px] bg-gray-800 absolute -left-[13px] top-[72px] rounded-l-lg"></div>
+                                        <div className="h-[40px] w-[3px] bg-gray-800 absolute -left-[13px] top-[124px] rounded-l-lg"></div>
+                                        <div className="h-[64px] w-[3px] bg-gray-800 absolute -right-[13px] top-[142px] rounded-r-lg"></div>
+                                        <div className="rounded-[2rem] overflow-hidden w-[250px] h-[530px] bg-black">
+                                            {/* Fake Ad Content */}
+                                            <img 
+                                                src="https://placehold.co/300x350/E11D48/03001C?text=Your+Ad&font=inter" 
+                                                className="w-full h-auto" 
+                                                alt="Generated Ad Preview"
+                                            />
+                                            <div className="p-4 text-left">
+                                                <div className="flex items-center gap-2">
+                                                    <img src="https://placehold.co/40x40/9333EA/ffffff?text=P&font=inter" className="rounded-full w-8 h-8" />
+                                                    <span className="font-semibold text-sm">Your_Brand</span>
+                                                </div>
+                                                <p className="text-sm mt-3">
+                                                    This ad was made in 10s by <span className="text-blue-400">#AdGeniusPro</span>. 
+                                                    Your team could never. 🔥
+                                                </p>
+                                                <p className="text-xs text-gray-500 mt-2">#AI #Marketing #Dominate</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* ==================================================================== */}
+                        {/* Pricing Section */}
+                        {/* ==================================================================== */}
+                        <section id="pricing" className="py-20 sm:py-32 px-6 lg:px-8">
+                            <div className="max-w-5xl mx-auto text-center">
+                                <h2 className="text-4xl font-extrabold tracking-tighter text-white sm:text-6xl">
+                                    Choose Your Weapon
+                                </h2>
+                                <p className="mt-6 text-lg text-gray-300 max-w-2xl mx-auto">
+                                    Start for free. Upgrade when you're ready to stop playing games
+                                    and start building an empire.
+                                </p>
+
+                                <div className="grid md:grid-cols-2 gap-8 mt-16 max-w-4xl mx-auto text-left">
+                                    {/* Free Plan */}
+                                    <div className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-3xl p-8">
+                                        <h3 className="text-sm font-semibold uppercase text-gray-400">The Amateur</h3>
+                                        <p className="mt-2 text-4xl font-bold text-white">Free</p>
+                                        <p className="mt-4 text-gray-300">Perfect for experimenting and seeing just how far behind your old process was.</p>
+                                        <ul className="mt-8 space-y-4">
+                                            {[
+                                                "3 Ad Generations per day",
+                                                "Basic Templates",
+                                                "Standard Quality Exports",
+                                                "Community Support"
+                                            ].map(item => (
+                                                <li key={item} className="flex items-center gap-3">
+                                                    <IconCheck className="text-green-400 flex-shrink-0" />
+                                                    <span className="text-gray-300">{item}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                        <a
+                                            href="#"
+                                            className="mt-10 block w-full rounded-lg bg-white/10 px-6 py-3 text-center font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:bg-white/20"
+                                        >
+                                            Start for Free
+                                        </a>
+                                    </div>
+
+                                    {/* Pro Plan */}
+                                    <div className="relative bg-gradient-to-br from-blue-900 to-purple-900 border border-blue-400 rounded-3xl p-8 shadow-2xl shadow-blue-500/40">
+                                        <span className="absolute top-0 -translate-y-1/2 left-1/2 -translate-x-1/2 inline-flex items-center px-4 py-1 rounded-full text-sm font-semibold text-blue-900 bg-blue-300">
+                                            Most Popular
+                                        </span>
+                                        <h3 className="text-sm font-semibold uppercase text-blue-300">The Dominator</h3>
+                                        <p className="mt-2 text-4xl font-bold text-white">$49<span className="text-xl font-medium text-gray-300">/mo</span></p>
+                                        <p className="mt-4 text-gray-300">For those who are serious about winning. Access the full arsenal.</p>
+                                        <ul className="mt-8 space-y-4">
+                                            {[
+                                                "Unlimited Ad Generations",
+                                                "Premium AI Templates",
+                                                "4K & MP4 Exports",
+                                                "AI Keyword Optimization",
+                                                "Brand Kit Analyzer",
+                                                "Priority Support"
+                                            ].map(item => (
+                                                <li key={item} className="flex items-center gap-3">
+                                                    <IconCheck className="text-blue-300 flex-shrink-0" />
+                                                    <span className="text-gray-200">{item}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                        <a
+                                            href="#"
+                                            className="mt-10 block w-full rounded-lg bg-blue-600 px-6 py-3 text-center font-semibold text-white shadow-lg shadow-blue-600/50 transition-all duration-300 hover:bg-blue-500"
+                                        >
+                                            Start Dominating
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* ==================================================================== */}
+                        {/* Blog Section */}
+                        {/* ==================================================================== */}
+                        <section id="blog" className="py-20 sm:py-32 px-6 lg:px-8 bg-black/30">
+                            <div className="max-w-7xl mx-auto">
+                                <div className="max-w-2xl mx-auto lg:mx-0 text-center lg:text-left">
+                                    <h2 className="text-4xl font-extrabold tracking-tighter text-white sm:text-6xl">
+                                        Free Game From The Masters
+                                    </h2>
+                                    <p className="mt-6 text-lg text-gray-300">
+                                        We're not just giving you the tool. We're giving you the playbook.
+                                        Articles on ad design, AI marketing, and how to crush your goals.
+                                    </p>
+                                </div>
+                                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
+                                    {blogPosts.map((post) => (
+                                        <article 
+                                            key={post.id}
+                                            className="group relative isolate flex flex-col justify-end overflow-hidden rounded-2xl bg-gray-900 px-8 pb-8 pt-80 sm:pt-48 lg:pt-80 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/20"
+                                        >
+                                            <img src={post.img} alt={post.title} className="absolute inset-0 -z-10 h-full w-full object-cover" />
+                                            <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black/80 via-black/50 to-transparent"></div>
+                                            
+                                            <h3 className="text-xl font-semibold leading-6 text-white group-hover:text-blue-300 transition-colors">
+                                                <a href="#">
+                                                    <span className="absolute inset-0"></span>
+                                                    {post.title}
+                                                </a>
+                                            </h3>
+                                            <div className="mt-3 text-sm font-medium text-gray-300">
+                                                {post.category}
+                                            </div>
+                                        </article>
+                                    ))}
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* ==================================================================== */}
+                        {/* Footer */}
+                        {/* ==================================================================== */}
+                        <footer className="py-16 px-6 lg:px-8 border-t border-white/10">
+                            <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+                                <div className="text-center md:text-left">
+                                    <a href="#" className="flex-shrink-0">
+                                        <h1 className="font-extrabold text-2xl tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+                                            AdGenius Pro
+                                        </h1>
+                                    </a>
+                                    <p className="mt-2 text-sm text-gray-400">Mediocrity is not an option.</p>
+                                    <p className="mt-1 text-sm text-gray-500">&copy; {new Date().getFullYear()} AdGenius Pro. All rights reserved. Stop copying.</p>
+                                </div>
+                                <div className="flex gap-6">
+                                    <a href="#" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">Features</a>
+                                    <a href="#" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">Pricing</a>
+                                    <a href="#" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">Blog</a>
+                                    <a href="#" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">Privacy</a>
+                                </div>
+                            </div>
+                        </footer>
+                    </div>
+                </div>
+            );
+        }
+
+        // ========================================================================
+        // Mount the React App
+        // ========================================================================
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
